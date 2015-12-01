@@ -1,5 +1,6 @@
 <%
 puts "In view_review, participant id: " + params[:id]
+puts "In view_review, reviewer id: " + params[:reviewer_id]
 participant = AssignmentParticipant.find(params[:id])
 @assignment = participant.assignment
 @questions = {} # A hash containing all the questions in all the questionnaires used in this assignment
@@ -27,6 +28,9 @@ prefix = "user"
 <% end %>
 
 <% if rscore and rscore[:assessments].length > 0 %>
+    
+    <% if false %>
+    
     <BR/>
     <%flag_varying_rubrics=false%>
 
@@ -52,9 +56,21 @@ prefix = "user"
         <%= render :partial => 'grades/review_table', :locals => { :ctrl => 'review', :caction => 'view_review', :symbol => "review".to_sym, :prefix => prefix, :assignment => participant.assignment, :reviews => rscore[:assessments], :collabel => "Review", :rowlabel => "Reviewer" }%>
     <%end%>
     <BR/>
+    
+    <% end %>
+    
+    
+    
     <HR/>
     <% count = 0 %>
     <% for review in rscore[:assessments] %>
+    <% puts "In view_reviewer, review.map.reviewer.id: " + review.map.reviewer.id.to_s %>
+    <% puts "In view_reviewer, review.map.id: " + review.map.id.to_s %>
+    <% puts "In view_reviewer, review.response_map.id: " + review.response_map.map_id.to_s %>
+    <% puts "In view_reviewer, review.map.response.first.response_id: " + review.map.response.first.response_id.to_s %>
+    <% puts "In view_review, params[:reviewer_id]: " + params[:reviewer_id] %>
+    <% if review.map.response.first.response_id.to_s.eql? params[:reviewer_id].to_s %>
+      <% puts "!!!!!!!!!!!!!!!Get" + params[:reviewer_id].to_s %>
       <% review_feedback = nil %>
 
       <% count = count + 1 %>
@@ -126,6 +142,8 @@ prefix = "user"
             <% end %>
             <BR/><HR/>
         <% end %>
+    <% end %>
+    
     <% end %>
 <% else %>
     <i>No reviews have been completed for this user's submissions.</i>
