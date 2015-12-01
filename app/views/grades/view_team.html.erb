@@ -23,6 +23,13 @@ pscore = @participant.scores(@questions)
 @rscore = pscore[:review]
 %>
 
+<% if @rscore %>
+    <% puts "In view_team, @rscore not null" %>
+    <% puts @rscore[:assessments].length %>
+<% else %>
+    <% puts "In view_team, @rscore is null" %>
+<% end %>
+
 <h1>Summary report for <%= @assignment.name %></h1>
 <BR/>
 

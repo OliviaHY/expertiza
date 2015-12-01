@@ -1,11 +1,32 @@
-<% if @rscore%>
-    <i>@rscore.length</i>
-<% end %>
-<% if @rscore%>
-    <i>@rscore.length</i>
+<%
+puts "In view_review, participant id: " + params[:id]
+participant = AssignmentParticipant.find(params[:id])
+@assignment = participant.assignment
+@questions = {} # A hash containing all the questions in all the questionnaires used in this assignment
+questionnaires = @assignment.questionnaires
+questionnaires.each do |questionnaire|
+  round = AssignmentQuestionnaire.where(assignment_id: @assignment.id, questionnaire_id:questionnaire.id).first.used_in_round
+  if(round!=nil)
+    questionnaire_symbol = (questionnaire.symbol.to_s+round.to_s).to_sym
+  else
+    questionnaire_symbol = questionnaire.symbol
+  end
+  @questions[questionnaire_symbol] = questionnaire.questions
+end
+
+pscore = participant.scores(@questions)
+rscore = pscore[:review]
+prefix = "user"
+%>
+
+<% if rscore %>
+    <% puts "rscore not null" %>
+    <% puts rscore[:assessments].length %>
+<% else %>
+    <% puts "rscore is null" %>
 <% end %>
 
-<% if @rscore and @rscore[:assessments].length > 0 %>
+<% if rscore and rscore[:assessments].length > 0 %>
     <BR/>
     <%flag_varying_rubrics=false%>
 
@@ -33,7 +54,7 @@
     <BR/>
     <HR/>
     <% count = 0 %>
-    <% for review in @rscore[:assessments] %>
+    <% for review in rscore[:assessments] %>
       <% review_feedback = nil %>
 
       <% count = count + 1 %>
