@@ -1,7 +1,7 @@
 
-  <style>
-    .hiddenRow {padding:0 !important;}
-  </style>
+<style>
+  .hiddenRow {padding:0 !important;}
+</style>
 
 <h1>Summary report for <%= @assignment.name %></h1>
 <h2>Summary report for team <%= @team.name %>(<%= @participant.fullname %>)</h2>
@@ -30,11 +30,24 @@
 <h4 style="font-weight:bold;"><%= vm.questionnaire_display_type %></h4>
 <table id="tbl_heat">
   <tr>          <th>Question</th>      <th>Max</th>
-    <% if %>
-      <% i = 1 %>
-      <% vm.listofreviews.each do |review| %>
-          <th style="border: 1px solid black"> <a target="_blank" href="../grades/view_reviewer?id=<%=@participant.id%>&reviewer_id=<%= review.id.to_s %>"><%= "Rev" + i.to_s %></a>  </th>
-          <% i += 1 %>
+    
+    <% i = 1 %>
+    <% vm.listofreviews.each do |review| %>
+      <% if @current_role_name.eql?'Student' %>
+        <th style="border: 1px solid black"> <a target="_blank" href="../grades/view_reviewer?id=<%=@participant.id%>&response_id=<%= review.id.to_s %>"><%= "Rev" + i.to_s %></a>  </th>
+        <% i += 1 %>
+      <% end %>
+      
+      <% if @current_role_name.eql?'Instructor' %>
+        <% puts "review_id: " + review.id.to_s %>
+        <% puts "map_id: " + Response.find(review.id).map_id.to_s %>
+        <% puts "participant_id/reviewer_id: " + ResponseMap.find(Response.find(review.id).map_id).reviewer_id.to_s %>
+        <% puts "user_id: " + Participant.find(ResponseMap.find(Response.find(review.id).map_id).reviewer_id).user_id.to_s %>
+        <% puts "user_fullname: " + User.find(Participant.find(ResponseMap.find(Response.find(review.id).map_id).reviewer_id).user_id).fullname.to_s %>
+        <% user_name = User.find(Participant.find(ResponseMap.find(Response.find(review.id).map_id).reviewer_id).user_id).fullname.to_s %>
+        
+        <th style="border: 1px solid black"> <a target="_blank" href="../grades/view_reviewer?id=<%=@participant.id%>&response_id=<%= review.id.to_s %>"><%= user_name.to_s %></a>  </th>
+        <% i += 1 %>
       <% end %>
     <% end %>
     

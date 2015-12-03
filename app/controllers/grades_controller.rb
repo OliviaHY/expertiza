@@ -165,6 +165,8 @@ class GradesController < ApplicationController
         get_number_of_comments_greater_than_10_words(vm.listofreviews,vm.listofrows)
 
         @vmlist << vm
+        
+        @current_role_name = current_role_name
     }
 
   end
