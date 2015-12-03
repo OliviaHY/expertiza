@@ -10,6 +10,23 @@
 <% @vmlist.each do |vm| %>
 
 <% if vm.listofreviewers.length > 0 %>
+
+<table style="border: 1px solid grey;">
+  <thead>
+    <th style="border: 1px solid grey;padding: 5px 5px 5px 5px;">#</th>
+    <th style="border: 1px solid grey;padding: 5px 5px 5px 5px;">Question</th>
+  </thead>
+  <% count = 0 %>
+  <% vm.listofrows.each do |row| %>
+    <% if row.score_row.count > 0 %>
+      <tr>
+        <td style="border: 1px solid grey;padding: 5px 5px 5px 5px;background-color: #ffffff;"><%= count += count %></td>
+        <td style="border: 1px solid grey;padding:5px; 5px 5px 5px;background-color: #ffffff;"><%= row.questionText %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
 <h4 style="font-weight:bold;"><%= vm.questionnaire_display_type %></h4>
 <table id="tbl_heat">
   <tr>          <th>Question</th>      <th>Max</th>
