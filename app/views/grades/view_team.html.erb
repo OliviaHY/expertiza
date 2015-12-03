@@ -20,7 +20,7 @@
   <% vm.listofrows.each do |row| %>
     <% if row.score_row.count > 0 %>
       <tr>
-        <td style="border: 1px solid grey;padding: 5px 5px 5px 5px;background-color: #ffffff;"><%= count += count %></td>
+        <td style="border: 1px solid grey;padding: 5px 5px 5px 5px;background-color: #ffffff;"><%= count += 1 %></td>
         <td style="border: 1px solid grey;padding:5px; 5px 5px 5px;background-color: #ffffff;"><%= row.questionText %></td>
       </tr>
     <% end %>
@@ -30,11 +30,14 @@
 <h4 style="font-weight:bold;"><%= vm.questionnaire_display_type %></h4>
 <table id="tbl_heat">
   <tr>          <th>Question</th>      <th>Max</th>
-    <% i = 1 %>
-    <% vm.listofreviews.each do |review| %>
-        <th style="border: 1px solid black"> <a target="_blank" href="../grades/view_reviewer?id=<%=@participant.id%>&reviewer_id=<%= review.id.to_s %>"><%= "Rev" + i.to_s %></a>  </th>
-        <% i += 1 %>
+    <% if %>
+      <% i = 1 %>
+      <% vm.listofreviews.each do |review| %>
+          <th style="border: 1px solid black"> <a target="_blank" href="../grades/view_reviewer?id=<%=@participant.id%>&reviewer_id=<%= review.id.to_s %>"><%= "Rev" + i.to_s %></a>  </th>
+          <% i += 1 %>
+      <% end %>
     <% end %>
+    
     <th style="border: 1px solid black" align="right">
       Average
     </th>
