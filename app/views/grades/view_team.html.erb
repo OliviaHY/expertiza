@@ -8,8 +8,16 @@
 <script>
   $(function () { $("[data-toggle='tooltip']").tooltip(); });
 </script>
+ <% puts 'pppppppp'%>
+ <% puts @vmlist%>
 
 <% @vmlist.each do |vm| %>
+     <% puts 'aaaaaaaa'%>
+     <% puts vm%>
+     <% puts 'bbbbbbb'%>
+     <% puts vm.listofrows%>
+     <% puts 'bbbbbbb'%>
+     <% puts vm%>
 
 <% if (vm.questionnaire_display_type == "Metareview" or vm.questionnaire_display_type == "Author Feedback" or vm.questionnaire_display_type == "Teammate Review") and @current_role_name.eql?'Student' %>
 <% else %>
@@ -96,9 +104,10 @@
           </td>
 
         </tr>
-      <tr >
 
-        <td colspan="<%= (i+1).to_s %>" class="hiddenRow" ><div id="hid<%= row.question_id.to_s %>" class="accordion-body collapse" style="margin-left:10px;">
+      <tr >
+        <td colspan="<%= (i+1).to_s %>" class="hiddenRow" >
+          <div id="hid<%= row.question_id.to_s %>" class="accordion-body collapse" style="margin-left:10px;">
           <div style="background-color:lightblue;padding:4px;"><%= row.questionText %></div>
           <div>
           <table style="border: 1px solid grey;">
@@ -112,7 +121,8 @@
             <% end %>
           </table>
           </div>
-        </div></td>
+        </div>
+        </td>
       </tr>
     <% end %>
   <tr>
@@ -123,10 +133,44 @@
       <%= vm.max_score_for_questionnaire %>
     </td>
     <% vm.get_total_review_scores.each do |total_score| %>
-      <td style="border: 1px solid black;" align="center">
+      <td style="border: 1px solid black;" align="center" data-toggle="collapse" class="accordion-toggle" data-target="#hid<%= params[:i] %>">
         <%= total_score.round.to_s %>
       </td>
+
     <% end %>
+    <tr>
+      <% vm.listofreviews.each do |review| %>
+          <td colspan="<%= (i+1).to_s %>" class="hiddenRow" >
+            <div id="hid<%= params[:i] %>" class="accordion-body collapse" style="margin-left:10px;">
+              <div style="background-color:#A9A9F5;padding:4px;">
+                <table style="border: 1px solid grey;">
+                  <thead>
+                  <th style="border: 1px solid grey;padding: 5px 5px 5px 5px;">Review</th>
+                  <th style="border: 1px solid grey;padding: 5px 5px 5px 5px;">Additinol Comment</th>
+                  </thead>
+                  <%j = 1%>
+                  <% vm.listofreviews.each do |review| %>
+                      <tr><td style="border: 1px solid grey;padding: 5px 5px 5px 5px;background-color: #ffffff;"><%= j %></td>
+                        <% if j == 7
+                             puts j
+                             puts '77777'
+                           puts review.id
+                             puts '111111'
+                             puts '2222'+Response.find(review.id).to_s
+                           puts Response.find(review.id)["additional_comment"]
+                           end
+                        %>
+                        <% addtionalComment = Response.find(review.id)["additional_comment"]%>
+                        <td style="border: 1px solid grey;padding:5px; 5px 5px 5px;background-color: #ffffff;"><%= addtionalComment %></td></tr>
+                      <%j += 1%>
+                  <% end %>
+                </table>
+              </div>
+            </div>
+          </td>
+      <%end%>
+
+    </tr>
     <!-- To complete the last two columns of the table, these will just be
          empty cells. -->
     <td style="border: 1px solid black;">
